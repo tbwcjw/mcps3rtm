@@ -95,7 +95,7 @@
 <h3>Creation</h3>
 
 <pre><code>./mcps3rtm cli --make-macro "macroName" "COMMAND VALUE, COMMAND VALUE"</code></pre>
-<p>Macro files are in CSV format, saved as <code>macroName.macro</code> in the current working directory.</p>
+<p>Macro files are in CSV format, saved as <code>macroName.macro</code> in the <code>macros/</code> directory.</p>
 
 <h3>Usage</h3>
 
