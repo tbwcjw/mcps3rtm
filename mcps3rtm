@@ -10,7 +10,6 @@ import sys
 import subprocess
 import os
 import venv
-from config import Config
 from pathlib import Path
 
 VENV = ".msps3rtm"
@@ -29,7 +28,7 @@ def environment():
 
         print(f"Installing dependencies from {REQUIREMENTS}...")
         subprocess.check_call([python_executable, "-m", "pip", "install", "--upgrade", "pip"])
-        if os.name == "posix":
+        if os.name == "nt":
             subprocess.check_call([python_executable, "-m", "pip", "install", "pywin32"])
         if requirements_path.exists():
             subprocess.check_call([python_executable, "-m", "pip", "install", "-r", str(requirements_path)])
@@ -112,11 +111,14 @@ if __name__ == "__main__":
 
     exe_env = environment()
 
+    
     if mode == "cli":
         cli = subprocess.run([exe_env, get_script_path("cli.py")] + args, cwd=str(BASE_PATH), 
     text=True)
         sys.exit(cli.returncode)
     elif mode == "server":
+        from config import Config #import config after environment setup
+
         server = subprocess.run([
             exe_env, "-m", "streamlit", "run", get_script_path("server.py"),
             "--server.port", str(Config.get("streamlit.port")),
