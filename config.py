@@ -1,11 +1,19 @@
 # config handling for mcps3rtm
 # tbwcjw - MIT 2025
 
+import sys
 import yaml
 import os
 
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 class Config:
-    CONFIG_FILE = "config.yml"
+    CONFIG_FILE = resource_path("config.yml")
 
     @staticmethod
     def load():

@@ -12,8 +12,19 @@ from offsets import map
 from webman import Webman
 from config import Config
 
+__author__ = "tbwcjw"
+__version__ = "0.1.0"
+__copyright__ = "MIT License"
+
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 class PS3RTM:
-    HISTORY_FILE = "history.csv"
+    HISTORY_FILE = resource_path("history.csv")
 
     def __init__(self, ip: str|None):
         self.ip = ip
@@ -158,7 +169,7 @@ class PS3RTM:
 
 def load_macros() -> dict[str, list[tuple[str, str]]]:
         macros = {}
-        macro_files = glob.glob("**macros/*.macro", recursive=True)
+        macro_files = glob.glob(os.path.join(resource_path("macros"), "*.macro"))
         for file_path in macro_files:
             macro_name = os.path.splitext(os.path.basename(file_path))[0]
             with open(file_path, newline='', encoding='utf-8') as csvfile:

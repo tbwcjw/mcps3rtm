@@ -59,4 +59,3 @@ class Webman:
         
         def set_memory(self, pid, address, value):
             return self.webman._send_command(APIArg.SET_MEMORY, f"proc={pid}&addr={address}&value={value}")
-

@@ -1,5 +1,9 @@
 .vscode
-.msps3rtm
+.venv
 __pycache__
 Offsets.txt
 history.csv
+*.egg-info
+build
+dist
+release

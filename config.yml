@@ -1,8 +1,5 @@
 ps3:
   force: false
   history: true
-  ip: 10.0.0.225
+  ip: 
   notify: true
-streamlit:
-  address: localhost
-  port: '8552'
