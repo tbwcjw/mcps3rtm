@@ -181,9 +181,9 @@ def load_macros() -> dict[str, list[tuple[str, str]]]:
         
 def main():
     parser = argparse.ArgumentParser(
-        description="""Minecraft PS3 Edition RTM CLI Tool
-Author: tbwcjw
-License: MIT 2025
+        description=f"""Minecraft PS3 Edition RTM CLI Tool - Version {__version__}
+Author: {__author__}
+License: {__copyright__} 2025
 GitHub: https://github.com/tbwcjw/mcps3rtm""",
         epilog="[command] -h, --help to display valid values",
         formatter_class=argparse.RawTextHelpFormatter
