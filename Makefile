@@ -17,7 +17,7 @@ release: build
 	@mkdir -p $(RELEASE_DIR)
 	@rm -f $(ZIP_FILE)
 	@cd $(DIST_DIR) && zip -r ../$(ZIP_FILE) $(APP_NAME)
-	@zip -r $(ZIP_FILE) macros config.yml README.md
+	@zip -r $(ZIP_FILE) macros config.yml README.md LICENSE
 
 clean:
 	@rm -rf $(DIST_DIR) $(BUILD_DIR) __pycache__ *.egg-info $(APP_NAME).spec
