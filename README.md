@@ -23,6 +23,7 @@
             <li>Deletion</li>
         </ul>
     </li>
+    <li><a href='#building'>Building</li></a>
     <li><a href='#troubleshooting'>Troubleshooting</li></a>
     <li><a href='#screenshots'>Screenshots</li></a>
     <li><a href='#credits'>Credits</li></a>
@@ -54,6 +55,7 @@ This change was made to reduce the amount of resources required for maintainance
 --delete-macro NAME   Delete macro by name
 --macro NAME          Load a macro 
 --server [PORT]             Launch the web server
+--desktop                   Launch the desktop application
 
 [command] -h, --help to display valid values</code></pre>
 <h3>Simple Commands</h3>
@@ -75,6 +77,8 @@ This change was made to reduce the amount of resources required for maintainance
 <p>Use <code>--server</code> to launch the integrated Flask server, and serve the GUI app on the local network. Default port is 5000, set with <code>--server [PORT]</code> or in <code>config.yml</code> with
 <code>server.port [PORT]</code></p>
 
+<h3>Desktop Flag</h3>
+<p>Use <code>--desktop</code> to launch the integrated Qt6 desktop app, which in turn launches the integrated Flask server, and serve the GUI app, and on the local network too.</p>
 <h2>Macros</h2>
 
 <h3>Creation</h3>
@@ -90,8 +94,21 @@ This change was made to reduce the amount of resources required for maintainance
 
 <pre><code>./mcps3rtm --delete-macro macroName</code></pre>
 
+<h2>Building</h2>
+<p>For pyinstaller to run, you will need to create a virtual environment with
+the packages from <code>requirements.txt</code> installed.</p>
+<code>make all</code> - builds, creates a release, then cleans up.<br>
+<code>make release</code> - zips the created executable along with requisites.<br>
+<code>make build</code> - builds the application into an executable.<br>
+<code>make clean</code> - removes <code>__pycache__</code>, the <code>dist/</code> and <code>build/</code> directories, and the <code>*.spec</code> file pyinstaller creates. Will not remove the <code>release/</code> directory.
+
 <h2>Troubleshooting</h2>
 <p><b>Game or system crashing unexpectedly</b>: This tool was developed using the latest version of Minecraft. Ensure your game is up to date. Some commands are incompatible with each other and will crash the game.</p>
+
+<pre><code>Page did not load in time.
+Perhaps the port is in use?</code></pre>
+<p>The desktop application failed to start the server on the port set in config.
+Find the process using that port and exit it.</p>
 
 <pre><code>THE RUNNING PROCESS IS NOT AN EBOOT. USE --force OR SET ps3.force TO IGNORE</code></pre>
 
@@ -110,7 +127,12 @@ This change was made to reduce the amount of resources required for maintainance
 <img src="assets/browser.png">
 <i>mcps3rtm GUI in browser.</i>
 </p>
+<p align="center">
+<img src="assets/desktop.png">
+<i>mcps3rtm GUI in Ubuntu.</i>
+</p>
 <h2>Credits</h2>
+Addresses/offsets:
 <pre><code>PhoenixARC, TheBlackRabbit, Misakiii, 
 MayhemModding, SkullModz, OhItzDiiTz, 
 DublinModz, EternalModz, et al.</code></pre>

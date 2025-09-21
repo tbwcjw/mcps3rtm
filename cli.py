@@ -6,6 +6,7 @@ import csv
 import glob
 import os
 import sys
+import threading
 import time
 import ipaddress
 from offsets import map
@@ -13,7 +14,7 @@ from webman import Webman
 from config import Config
 
 __author__ = "tbwcjw <me@tbwcjw.online>"
-__version__ = "0.1.5"
+__version__ = "0.2.0"
 __copyright__ = "MIT License"
 
 server_mode = False
@@ -214,7 +215,7 @@ def delete_macro(macro_name):
             print(f"Deleted {macro_file}")
             if server_mode:
                 return True, "Deleted macro and file."
-
+   
 def main():
     global server_mode
     parser = argparse.ArgumentParser(
@@ -232,8 +233,8 @@ GitHub Repository: https://github.com/tbwcjw/mcps3rtm""",
     parser.add_argument("--make-macro", nargs=2, metavar=("NAME", "COMMANDS"), help="Chain multiple commands, and save a macro, which can be loaded with `--macro Name`")
     parser.add_argument("--delete-macro", nargs=1, metavar=("NAME"), help="Delete macro by name")
     parser.add_argument("--macro", metavar=("NAME"), help="Load a macro by name")
-    parser.add_argument("--server", nargs='?', metavar=("PORT"), const=Config.get("server.port"), default=Config.get("server.port"),  help="Launch the web server")
-
+    parser.add_argument("--server", nargs='?', metavar=("PORT"), const=Config.get("server.port"), help="Launch the web server")
+    parser.add_argument("--desktop", action='store_true', help="Launch the desktop application")
     subparsers = parser.add_subparsers(dest="command")
 
     for key, val in map.items():
@@ -313,6 +314,25 @@ GitHub Repository: https://github.com/tbwcjw/mcps3rtm""",
     if not ip:
         print("Missing --ip argument or ps3.ip in config.yml", file=sys.stderr)
         sys.exit(1)
+
+    if args.desktop:
+        from desktop import run_desktop
+        from server import create_app
+        server_mode = True
+        rtm = PS3RTM(ip)
+        
+        app = create_app(ps3_ip=ip, 
+                         macros=rtm.macros, 
+                         rtm=rtm,
+                         author=__author__,
+                         version=__version__,
+                         copyright=__copyright__)
+        
+        server_thread = threading.Thread(target=lambda: app.run(debug=False, port=Config.get("server.port")))
+        server_thread.daemon = True
+        server_thread.start()
+        run_desktop()
+        sys.exit(0)
 
     if args.server:
         from server import create_app
