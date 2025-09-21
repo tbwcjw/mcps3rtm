@@ -5,7 +5,7 @@ a = Analysis(
     ['cli.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('wwwroot', 'wwwroot')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

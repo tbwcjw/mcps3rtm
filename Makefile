@@ -11,7 +11,7 @@ ZIP_FILE = $(RELEASE_DIR)/$(APP_NAME)-$(VERSION).zip
 all: clean build release
 
 build:
-	pyinstaller --onefile --name $(APP_NAME) $(SRC)
+	pyinstaller --onefile --add-data "wwwroot:wwwroot" --name $(APP_NAME) $(SRC)
 
 release: build
 	@mkdir -p $(RELEASE_DIR)

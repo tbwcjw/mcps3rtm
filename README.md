@@ -30,7 +30,7 @@
 </ul>
 <h2>Notice</h2>
 
-<p>The scope of this project has changed. Server/Desktop functionality has been removed. This application is now CLI only.
+<p>The scope of this project has changed... again. Server functionality has been re-implemented. Desktop app functionality is undecided as yet.
 
 This change was made to reduce the amount of resources required for maintainance, and to increase the portability of the application over time.</p>
 <h2>Requirements</h2>
@@ -41,7 +41,7 @@ This change was made to reduce the amount of resources required for maintainance
 </ul>
 
 <h2>Usage</h2>
-<pre><code>./mcps3rtm [-h] [--ip IP] [--force] [--clear-history] [--notify] [--make-macro NAME COMMANDS] [--delete-macro NAME] [--macro NAME]
+<pre><code>./mcps3rtm [-h] [--ip IP] [--force] [--clear-history] [--notify] [--server] [--make-macro NAME COMMANDS] [--delete-macro NAME] [--macro NAME]
 </code></pre>
 
 <h4>Options</h4>
@@ -53,24 +53,30 @@ This change was made to reduce the amount of resources required for maintainance
 --make-macro NAME COMMANDS      Chain multiple commands, and save a macro, which can be loaded with `--macro file.csv`
 --delete-macro NAME   Delete macro by name
 --macro NAME          Load a macro 
+--server              Launch the web server
 
 [command] -h, --help to display valid values</code></pre>
-<h4>Simple Commands</h4>
+<h3>Simple Commands</h3>
 <pre><code>./mcps3rtm --ip x.x.x.x Command VALUE</code></pre>
 <p>A list of commands and values can be found <a href='OFFSETS.md'>here</a>.
 <h4>IP Flag</h4>
 <p>Use <code>--ip</code> to set the PS3 IP. This can also be set in <code>config.yml</code> as <code>ps3.ip x.x.x.x</code></p>
 
-<h4>Notify Flag</h4>
+<h3>Notify Flag</h3>
 <p>Use <code>--notify</code> to display notifications on the PS3 whenever a command is sent.</p>
 <p>This can also be set in <code>config.yml</code> as <code>ps3.notify true|false</code></p>
 
-<h4>Force Flag</h4>
+<h3>Force Flag</h3>
 <p>Use <code>--force</code> to stop the application from validating that an EBOOT process is running.  
 <b>Running with this flag can break PS3 system functionality.</b></p> 
 <p>This can also be set in <code>config.yml</code> as <code>ps3.force true|false</code></p>
-<h3>Creation</h3>
 
+<h3>Server Flag</h3>
+<p>Use <code>--server</code> to launch the integrated Flask server, and serve the GUI app on the local network.
+
+<h2>Macros</h2>
+
+<h3>Creation</h3>
 <pre><code>./mcps3rtm --make-macro "macroName" "COMMAND VALUE, COMMAND VALUE"</code></pre>
 <p>Macro files are in CSV format, saved as <code>macroName.macro</code> in the <code>macros/</code> directory.</p>
 
@@ -98,6 +104,10 @@ This change was made to reduce the amount of resources required for maintainance
 <p align="center">
 <img src="assets/example.png">
 <i>Minecraft with the "ExampleON" macro.</i>
+</p>
+<p align="center">
+<img src="assets/browser.png">
+<i>mcps3rtm GUI in browser.</i>
 </p>
 <h2>Credits</h2>
 <pre><code>PhoenixARC, TheBlackRabbit, Misakiii, 

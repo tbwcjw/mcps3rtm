@@ -12,9 +12,11 @@ from offsets import map
 from webman import Webman
 from config import Config
 
-__author__ = "tbwcjw"
-__version__ = "0.1.0"
+__author__ = "tbwcjw <me@tbwcjw.online>"
+__version__ = "0.1.5"
 __copyright__ = "MIT License"
+
+server_mode = False
 
 def resource_path(relative_path):
     if getattr(sys, "frozen", False):
@@ -137,17 +139,22 @@ class PS3RTM:
             )
 
     def run_command(self, cmd: str, val: str):
+        global server_mode
         val = self.validate_command(cmd, val)
-
         pid = self.get_pid()
 
         if pid == None:
+            if server_mode:
+                return False, "Failed to get the current process ID from the PS3. Is the PS3 online and the IP correct?"
             print("Failed to get the current process ID from the PS3. Is the PS3 online and the IP correct?", file=sys.stderr)
             sys.exit(1)
 
         if not self.force: #if force flag is not set we check the process
             val_proc = self.is_eboot(pid)
             if not val_proc:
+                if server_mode:
+                    return False, "THE RUNNING PROCESS IS NOT AN EBOOT. USE --force OR SET ps3.force TO IGNORE"
+                
                 print("THE RUNNING PROCESS IS NOT AN EBOOT. USE --force OR SET ps3.force TO IGNORE", file=sys.stderr)
                 sys.exit(1)
 
@@ -160,10 +167,26 @@ class PS3RTM:
         if self.write_history:
             self.log_history(cmd, val)
 
+        if server_mode:
+            return True, f"Command ran successfully."
+
     def run_macro(self, name: str):
+        global server_mode
         if name not in self.macros:
+            if server_mode:
+                return False, f"No macro found with name: {name}"
+            
             print(f"No macro found with name: {name}")
             return
+        
+        if server_mode:
+            for cmd, val in self.macros[name]:
+                if server_mode:
+                    success, error = self.run_command(cmd, val)
+                    if not success:
+                        return False, error
+            return True, f"Macro ran successfully."
+        
         for cmd, val in self.macros[name]:
             self.run_command(cmd, val)
 
@@ -178,13 +201,27 @@ def load_macros() -> dict[str, list[tuple[str, str]]]:
                 for row in reader:
                     macros.setdefault(macro_name, []).append((row[0], row[1]))
         return macros
-        
+
+def delete_macro(macro_name):
+    global server_mode
+    macro_files = glob.glob("**macros/*.macro", recursive=True)
+    if not macro_name.endswith(".macro"):
+        macro_name += ".macro"
+
+    for macro_file in macro_files:
+        if os.path.basename(macro_file) == macro_name:
+            os.remove(macro_file)
+            print(f"Deleted {macro_file}")
+            if server_mode:
+                return True, "Deleted macro and file."
+
 def main():
+    global server_mode
     parser = argparse.ArgumentParser(
         description=f"""Minecraft PS3 Edition RTM CLI Tool - Version {__version__}
 Author: {__author__}
-License: {__copyright__} 2025
-GitHub: https://github.com/tbwcjw/mcps3rtm""",
+License: {__copyright__}
+GitHub Repository: https://github.com/tbwcjw/mcps3rtm""",
         epilog="[command] -h, --help to display valid values",
         formatter_class=argparse.RawTextHelpFormatter
     )
@@ -192,9 +229,10 @@ GitHub: https://github.com/tbwcjw/mcps3rtm""",
     parser.add_argument("--force", action="store_true", help="Disables process validation checking")
     parser.add_argument("--clear-history", action="store_true", help="Clear history file")
     parser.add_argument("--notify", action="store_true", help="Display a notification on the PS3 each time a value is changed.")
-    parser.add_argument("--make-macro", nargs=2, metavar=("NAME", "COMMANDS"), help="Chain multiple commands, and save a macro, which can be loaded with `--macro file.csv`")
+    parser.add_argument("--make-macro", nargs=2, metavar=("NAME", "COMMANDS"), help="Chain multiple commands, and save a macro, which can be loaded with `--macro Name`")
     parser.add_argument("--delete-macro", nargs=1, metavar=("NAME"), help="Delete macro by name")
-    parser.add_argument("--macro", metavar=("NAME"), help="Load a macro ")
+    parser.add_argument("--macro", metavar=("NAME"), help="Load a macro by name")
+    parser.add_argument("--server", action="store_true", help="Launch the web server")
 
     subparsers = parser.add_subparsers(dest="command")
 
@@ -223,20 +261,9 @@ GitHub: https://github.com/tbwcjw/mcps3rtm""",
         clear_history()
         sys.exit(0)
 
-    def delete_macro():
-        macro_name = args.delete_macro[0]
-        macro_files = glob.glob("**macros/*.macro", recursive=True)
-        if not macro_name.endswith(".macro"):
-            macro_name += ".macro"
-
-        for macro_file in macro_files:
-            if os.path.basename(macro_file) == macro_name:
-                os.remove(macro_file)
-                print(f"Deleted {macro_file}")
-
     if args.delete_macro:
         print("DELETE macro")
-        delete_macro()
+        delete_macro(args.delete_macro[0])
         sys.exit(0)
 
     def make_macro():
@@ -286,6 +313,25 @@ GitHub: https://github.com/tbwcjw/mcps3rtm""",
     if not ip:
         print("Missing --ip argument or ps3.ip in config.yml", file=sys.stderr)
         sys.exit(1)
+
+    if args.server:
+        from server import create_app
+        server_mode = True
+        rtm = PS3RTM(ip)
+
+        if args.force:
+            rtm.force = True
+        if args.notify:
+            rtm.notify = True
+
+        app = create_app(ps3_ip=ip, 
+                         macros=rtm.macros, 
+                         rtm=rtm,
+                         author=__author__,
+                         version=__version__,
+                         copyright=__copyright__)
+        app.run(debug=False)
+        sys.exit(0)
 
     if args.macro:
         rtm = PS3RTM(ip)
