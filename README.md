@@ -2,12 +2,11 @@
     <img width="15%" src="assets/logo512.png">
 </p>
 <h2 align="center">mcps3rtm - Minecraft PS3 Edition RTM Tool</h2>
-<p align="center">A real time modding tool for the PS3 edition of Minecraft with <b>165</b> commands with web interface. Written in Python.</p>
+<p align="center">A real time modding tool for the PS3 edition of Minecraft with 165 commands with web and desktop interfaces. Written in Python.</p>
 <p align="center">Does not require a modified <code>EBOOT.bin</code> or any <code>.sprx</code> files.</p>
 <hr>
 <h3>Table of Contents</h3>
 <ul>
-    <li><a href='#notice'>Notice</li></a>
     <li><a href='#requirements'>Requirements</li></a>
     <li><a href='#usage'>Usage</a>
         <ul>
@@ -29,12 +28,6 @@
     <li><a href='#credits'>Credits</li></a>
     <li><a href='#license'>License</li></a>
 </ul>
-<h2>Notice</h2>
-
-<p>The scope of this project has changed... again. Server functionality has been re-implemented. Desktop app functionality is undecided as yet.
-
-This change was made to reduce the amount of resources required for maintainance, and to increase the portability of the application over time.</p>
-<h2>Requirements</h2>
 <ul>
 <li>Python.</li>
 <li>A PS3 running CFW/Hen with the webMAN mod installed.</li>
