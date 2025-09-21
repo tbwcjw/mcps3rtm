@@ -1,5 +1,7 @@
 ps3:
   force: false
   history: true
-  ip: 
+  ip: null
   notify: true
+server:
+  port: '5000'

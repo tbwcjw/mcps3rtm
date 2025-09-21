@@ -232,7 +232,7 @@ GitHub Repository: https://github.com/tbwcjw/mcps3rtm""",
     parser.add_argument("--make-macro", nargs=2, metavar=("NAME", "COMMANDS"), help="Chain multiple commands, and save a macro, which can be loaded with `--macro Name`")
     parser.add_argument("--delete-macro", nargs=1, metavar=("NAME"), help="Delete macro by name")
     parser.add_argument("--macro", metavar=("NAME"), help="Load a macro by name")
-    parser.add_argument("--server", action="store_true", help="Launch the web server")
+    parser.add_argument("--server", nargs='?', metavar=("PORT"), const=Config.get("server.port"), default=Config.get("server.port"),  help="Launch the web server")
 
     subparsers = parser.add_subparsers(dest="command")
 
@@ -330,7 +330,7 @@ GitHub Repository: https://github.com/tbwcjw/mcps3rtm""",
                          author=__author__,
                          version=__version__,
                          copyright=__copyright__)
-        app.run(debug=False)
+        app.run(debug=False, port=args.server)
         sys.exit(0)
 
     if args.macro:

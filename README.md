@@ -1,8 +1,8 @@
 <p align="center">
     <img width="15%" src="assets/logo512.png">
 </p>
-<h2 align="center">mcps3rtm - Minecraft PS3 Edition CLI RTM Tool</h2>
-<p align="center">A CLI real time modding tool for the PS3 edition of Minecraft with <b>165</b> commands. Written in Python.</p>
+<h2 align="center">mcps3rtm - Minecraft PS3 Edition RTM Tool</h2>
+<p align="center">A real time modding tool for the PS3 edition of Minecraft with <b>165</b> commands with web interface. Written in Python.</p>
 <p align="center">Does not require a modified <code>EBOOT.bin</code> or any <code>.sprx</code> files.</p>
 <hr>
 <h3>Table of Contents</h3>
@@ -53,7 +53,7 @@ This change was made to reduce the amount of resources required for maintainance
 --make-macro NAME COMMANDS      Chain multiple commands, and save a macro, which can be loaded with `--macro file.csv`
 --delete-macro NAME   Delete macro by name
 --macro NAME          Load a macro 
---server              Launch the web server
+--server [PORT]             Launch the web server
 
 [command] -h, --help to display valid values</code></pre>
 <h3>Simple Commands</h3>
@@ -72,7 +72,8 @@ This change was made to reduce the amount of resources required for maintainance
 <p>This can also be set in <code>config.yml</code> as <code>ps3.force true|false</code></p>
 
 <h3>Server Flag</h3>
-<p>Use <code>--server</code> to launch the integrated Flask server, and serve the GUI app on the local network.
+<p>Use <code>--server</code> to launch the integrated Flask server, and serve the GUI app on the local network. Default port is 5000, set with <code>--server [PORT]</code> or in <code>config.yml</code> with
+<code>server.port [PORT]</code></p>
 
 <h2>Macros</h2>
 
