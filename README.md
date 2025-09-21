@@ -35,7 +35,7 @@
 </ul>
 
 <h2>Usage</h2>
-<pre><code>./mcps3rtm [-h] [--ip IP] [--force] [--clear-history] [--notify] [--server] [--make-macro NAME COMMANDS] [--delete-macro NAME] [--macro NAME]
+<pre><code>./mcps3rtm [-h] [--ip IP] [--force] [--clear-history] [--notify] [--server] [--desktop] [--make-macro NAME COMMANDS] [--delete-macro NAME] [--macro NAME]
 </code></pre>
 
 <h4>Options</h4>
@@ -72,6 +72,7 @@
 
 <h3>Desktop Flag</h3>
 <p>Use <code>--desktop</code> to launch the integrated Qt6 desktop app, which in turn launches the integrated Flask server, and serve the GUI app, and on the local network too.</p>
+<p>An example <code>.desktop</code> entry can be found <a href='https://gist.github.com/tbwcjw/10cb54ed76c76542a938e1abadf019bc'>here</a>.</p>
 <h2>Macros</h2>
 
 <h3>Creation</h3>
