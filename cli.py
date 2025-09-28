@@ -29,7 +29,7 @@ def resource_path(relative_path):
 class PS3RTM:
     HISTORY_FILE = resource_path("history.csv")
 
-    def __init__(self, ip: str|None):
+    def __init__(self, ip: str):
         self.ip = ip
         self.write_history = Config.get("ps3.history")
         self.wm = Webman(self.ip)
