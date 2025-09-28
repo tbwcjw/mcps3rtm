@@ -21,13 +21,20 @@ def create_app(ps3_ip, macros, rtm, version, copyright, author):
                                config_file_path=Config.CONFIG_FILE,
                                cl_str=" ".join(sys.argv)) # load config here so we don't have to restart
 
+    @app.route("/command/<string:cmd_key>/", defaults={'value': None})
     @app.route("/command/<string:cmd_key>/<string:value>")
     def command(cmd_key, value):
+        if value is None:
+            return Response("Value is missing!", status=404, mimetype='text/plain')
+        
         success, result = rtm.run_command(cmd_key, value)
         return f"{result}", 200 if success else 404, {'Content-Type': 'text/plain'}
     
+    @app.route("/macro/<string:macro_name>/", defaults={'value': None})
     @app.route("/macro/<string:macro_name>/<string:value>")
     def macro(macro_name, value):
+        if value is None:
+            return Response("Value is missing!", mimetype='text/plain')
         if value == "ACTIVATE":
             success, result = rtm.run_macro(macro_name)
         if value == "DELETE":

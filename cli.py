@@ -14,7 +14,7 @@ from webman import Webman
 from config import Config
 
 __author__ = "tbwcjw <me@tbwcjw.online>"
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __copyright__ = "MIT License"
 
 server_mode = False

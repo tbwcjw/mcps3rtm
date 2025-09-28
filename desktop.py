@@ -5,12 +5,19 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import QUrl, QTimer
 from config import Config
 
+def resource_path(relative_path):
+        import os
+        if getattr(sys, "frozen", False):
+            base_path = os.path.dirname(sys.executable)
+        else:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
+
 class Browser(QMainWindow):
     def __init__(self, url):
         super().__init__()
         self.setWindowTitle("mcps3rtm")
-        self.setWindowIcon(QIcon("wwwroot/static/img/logo512.png"))
-
+        self.setWindowIcon(QIcon(resource_path("wwwroot/static/img/logo512.png")))
         screen = QApplication.primaryScreen()
         screen_size = screen.size()
         width = screen_size.width() * 2 // 3 #2/3rds
@@ -31,7 +38,7 @@ class Browser(QMainWindow):
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.on_timeout)
-        self.timer.start(5000)
+        self.timer.start(10000)
 
     def on_load_finished(self, success):
         self.timer.stop()
@@ -47,6 +54,7 @@ class Browser(QMainWindow):
 
 def run_desktop():
     app = QApplication(sys.argv)
-    browser = Browser(f"http://localhost:{Config.get("server.port")}")
+    port = Config.get("server.port") or 5000
+    browser = Browser(f"http://localhost:{port}")
     browser.show()
     sys.exit(app.exec())
